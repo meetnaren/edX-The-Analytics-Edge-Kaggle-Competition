@@ -28,7 +28,7 @@ poll$HouseholdStatus=pollImputed$poll.HouseholdStatus
 poll$EducationLevel=pollImputed$poll.EducationLevel
 poll$Age=pollImputed$poll.Age
 
-#Feature Selection
+#Feature Selection using a chi-squared test. Any feature with a p-value less than 0.005 is chosen to be part of the random forest prediction down below.
 RegressionFields="Party ~ "
 temp="Gender+Income+HouseholdStatus+EducationLevel+Age"
 for (i in 7:107){
@@ -44,8 +44,7 @@ rfmodel=randomForest(formula(RegressionFields),data=poll)
 prediction=predict(rfmodel)
 (table(poll$Party,prediction)[1]+table(poll$Party,prediction)[4])/nrow(poll)
 
-
-
+#Data wrangling on the test dataset
 polltest=read.csv("test2016.csv",na.strings=c("NA"))
 
 #Setting blanks as NA in the non-question columns
